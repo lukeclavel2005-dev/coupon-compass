@@ -1,15 +1,12 @@
-Coupon Compass - Cleaned Working Copy
+Coupon Compass - cleaned working copy
 
-This folder is the canonical cleaned version of Coupon Compass.
+This folder is based on the most complete Final_Compass_CINF version.
+Changes made:
+- Corrected category page browser titles.
+- Added rel="noopener noreferrer" to external links that open new tabs.
+- Loaded the shared JavaScript file on every HTML page for consistent future behavior.
+- Preserved the existing layout, styles, sample deal data, and navigation.
 
-Cleanup completed:
-- Corrected category page titles.
-- Added rel="noopener noreferrer" to external target="_blank" links.
-- Added script_final.js consistently across the HTML pages.
-- Verified internal HTML links resolve within this folder.
-- Removed duplicate project copies from the working package.
+Important: the coupons/deals are still static demo data. A future version should use a backend/API/database for real deal data.
 
-Current architecture:
-- Static HTML/CSS/JavaScript frontend.
-- Coupon/deal data is currently sample/static data in script_final.js.
-- No backend, database, or live retailer API is included yet.
+Open index_final.html to start the site.
