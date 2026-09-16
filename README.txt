@@ -9,4 +9,4 @@ Changes made:
 
 Important: the coupons/deals are still static demo data. A future version should use a backend/API/database for real deal data.
 
-Open index_final.html to start the site.
+Open index.html to start the site.
