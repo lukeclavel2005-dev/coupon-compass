@@ -1,12 +1,14 @@
-Coupon Compass - cleaned working copy
+Coupon Compass - V2
 
-This folder is based on the most complete Final_Compass_CINF version.
-Changes made:
-- Corrected category page browser titles.
-- Added rel="noopener noreferrer" to external links that open new tabs.
-- Loaded the shared JavaScript file on every HTML page for consistent future behavior.
-- Preserved the existing layout, styles, sample deal data, and navigation.
+Current project state:
+- Unified responsive V2 design across homepage, stores, categories, search, savings guide, and detail pages.
+- Clean filenames with no _final suffixes.
+- Shared demo deal data in script.js.
+- Store/category pages automatically render matching demo offers.
+- GitHub Pages entry point: index.html.
 
-Important: the coupons/deals are still static demo data. A future version should use a backend/API/database for real deal data.
-
-Open index.html to start the site.
+Planned next stages:
+- Live deal data / API integration.
+- Backend and database.
+- Verified expiration dates and smarter filtering.
+- AI-assisted deal discovery and recommendations.
