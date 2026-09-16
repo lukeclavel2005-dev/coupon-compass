@@ -92,6 +92,40 @@ function renderFeaturedDeals() {
   container.innerHTML = deals.slice(0, 3).map(dealCardMarkup).join("");
 }
 
+function renderContextDeals() {
+  const container = document.getElementById("page-deals");
+  if (!container) return;
+
+  const store = (container.dataset.store || "").trim().toLowerCase();
+  const category = (container.dataset.category || "").trim().toLowerCase();
+
+  const matches = deals.filter(deal => {
+    const storeMatch = !store || deal.store.toLowerCase() === store;
+    const categoryMatch = !category || deal.category.toLowerCase() === category;
+    return storeMatch && categoryMatch;
+  });
+
+  if (matches.length === 0) {
+    const label = container.dataset.store || container.dataset.category || "this page";
+    container.innerHTML = `
+      <article class="deal-card">
+        <div class="deal-topline">
+          <span class="store-pill">${escapeHtml(label)}</span>
+          <span class="deal-badge">Coming next</span>
+        </div>
+        <h3>No demo offers here yet.</h3>
+        <p class="deal-description">This page is ready for live deal data. For now, try the full Coupon Compass demo search.</p>
+        <div class="deal-actions">
+          <a class="deal-link" href="search.html">Search all deals</a>
+        </div>
+      </article>
+    `;
+    return;
+  }
+
+  container.innerHTML = matches.map(dealCardMarkup).join("");
+}
+
 function showCopyStatus(code) {
   document.querySelector(".copy-status")?.remove();
   const status = document.createElement("div");
@@ -223,6 +257,7 @@ function setupHeroSearch() {
 
 document.addEventListener("DOMContentLoaded", () => {
   renderFeaturedDeals();
+  renderContextDeals();
   setupCopyButtons();
   setupCategoryFilters();
   initializeSearchPage();

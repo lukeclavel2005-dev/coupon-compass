@@ -1,23 +1,72 @@
-<!DOCTYPE html><html><head>
-<meta charset="UTF-8"><title>Best Buy Deals</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="style.css">
-</head><body>
-<header><h1>Coupon Compass</h1><p class="tagline">Find coupons fast.</p></header>
-
-<nav>
-    <a href="index.html">Home</a>
-    <a href="stores.html">Store Directory</a>
-    <a href="categories.html">Categories</a>
-    <a href="search.html">Search</a>
-    <a href="tips.html">Tips &amp; Savings Guide</a>
-</nav>
-
-
-<section><h2>Best Buy Deals</h2>
-<div class='card'><p>Sample coupons for Best Buy Deals.</p></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Coupon Compass helps you browse demo deals, stores, categories, and savings tips.">
+  <title>Best Buy Deals | Coupon Compass</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="home-page">
+<header class="site-header">
+  <div class="topbar">
+    <a class="brand" href="index.html" aria-label="Coupon Compass home">
+      <span class="brand-mark">C</span><span>Coupon Compass</span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a> <a class="active" href="stores.html">Stores</a> <a href="categories.html">Categories</a> <a href="search.html">Search</a> <a href="tips.html">Savings Guide</a>
+    </nav>
+  </div>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-content">
+    <span class="eyebrow">STORE SPOTLIGHT</span>
+    <h1>Best Buy deals.</h1>
+    <p class="hero-copy">Browse Coupon Compass demo offers tagged to Best Buy. Live retailer data is planned for a later version.</p>
+    <div class="quick-links"><span>Explore:</span><a href="stores.html">All stores</a><a href="search.html?q=Best%20Buy">Search Best Buy</a><a href="categories.html">Categories</a></div>
+  </div>
+  <div class="hero-panel">
+    <div class="hero-panel-badge">B · BEST BUY</div>
+    <p class="panel-kicker">Technology, laptops & electronics</p>
+    <div class="metric-row">
+      <div><strong>Demo</strong><span>Offer data</span></div>
+      <div><strong>Technology</strong><span>Primary tag</span></div>
+      <div><strong>Copy</strong><span>Coupon codes</span></div>
+    </div>
+    <p class="panel-note">Codes and discounts on this project are sample data used to test the interface.</p>
+  </div>
 </section>
 
-<footer><p>&copy; 2025 Coupon Compass</p></footer>
+<section class="home-section">
+  <div class="section-heading">
+    <div><span class="eyebrow dark">DEMO OFFERS</span><h2>Best Buy on Coupon Compass</h2></div>
+    <a class="text-link" href="search.html?q=Best%20Buy">Search Best Buy →</a>
+  </div>
+  <div id="page-deals" class="deal-grid" data-store="Best Buy"></div>
+</section>
+
+<section class="home-section">
+  <div class="section-heading"><div><span class="eyebrow dark">BEFORE YOU BUY</span><h2>Quick checks</h2></div></div>
+  <div class="category-grid">
+    <div class="category-card"><span>✓</span><strong>Verify the offer</strong><small>Check the retailer page for current terms and exclusions.</small></div>
+    <div class="category-card"><span>↔</span><strong>Compare total cost</strong><small>Include shipping, fees, and any minimum spend.</small></div>
+    <div class="category-card"><span>↩</span><strong>Check returns</strong><small>A lower price can matter less if the return policy is worse.</small></div>
+  </div>
+</section>
+
+<section class="home-section roadmap-banner">
+  <div><span class="eyebrow">COMING NEXT</span><h2>Real Best Buy deal data.</h2><p>The backend stage can replace this demo list with current offers and verification details.</p></div>
+  <a class="secondary-button" href="stores.html">All stores</a>
+</section>
+</main>
+<footer class="site-footer">
+  <div>
+    <a class="brand footer-brand" href="index.html"><span class="brand-mark">C</span><span>Coupon Compass</span></a>
+    <p>Find coupons fast. Spend smarter.</p>
+  </div>
+  <p>© 2026 Coupon Compass · Portfolio project</p>
+</footer>
 <script src="script.js"></script>
-</body></html>
+</body>
+</html>
