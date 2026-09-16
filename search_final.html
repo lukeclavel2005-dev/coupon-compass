@@ -1,26 +1,35 @@
-<!DOCTYPE html><html><head>
-<meta charset="UTF-8"><title>Search</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="style_final.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Search Coupon Compass demo deals by store, category, product, or coupon code.">
+  <title>Search Deals | Coupon Compass</title>
+  <link rel="stylesheet" href="style_final.css">
 </head>
 <body>
-<header><h1>Coupon Compass</h1><p class="tagline">Find coupons fast.</p></header>
+  <header>
+    <h1>Coupon Compass</h1>
+    <p class="tagline">Find coupons fast.</p>
+  </header>
 
-<nav>
-    <a href="index_final.html">Home</a>
+  <nav>
+    <a href="index.html">Home</a>
     <a href="stores_final.html">Store Directory</a>
     <a href="categories_final.html">Categories</a>
     <a href="search_final.html">Search</a>
     <a href="tips_final.html">Tips &amp; Savings Guide</a>
-</nav>
+  </nav>
 
-<section>
-<h2>Search</h2>
-<p>Type a store, category, or keyword to instantly see matching sample deals.</p>
-<input type="text" id="searchBox" placeholder="e.g., Amazon, travel, laptops" oninput="searchDeals()" style="width:100%; padding:8px; margin-bottom:12px;">
-<div id="results"></div>
-</section>
+  <section>
+    <h2>Search deals</h2>
+    <p>Search the current demo dataset by store, category, product, keyword, or coupon code.</p>
+    <label class="sr-only" for="searchBox">Search deals</label>
+    <input type="search" id="searchBox" placeholder="e.g., Amazon, travel, laptops, SAVE15" autocomplete="off">
+    <div id="results"></div>
+  </section>
 
-<footer><p>&copy; 2025 Coupon Compass</p></footer>
-<script src="script_final.js"></script>
-</body></html>
+  <footer><p>&copy; 2026 Coupon Compass</p></footer>
+  <script src="script_final.js"></script>
+</body>
+</html>
