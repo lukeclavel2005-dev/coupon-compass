@@ -1,5 +1,5 @@
-
-// Shared deals data for dynamic features
+// Coupon Compass demo data.
+// This will be replaced with API/database data in a later build stage.
 const deals = [
   {
     store: "Amazon",
@@ -7,7 +7,8 @@ const deals = [
     code: "SAVE15",
     category: "Technology",
     url: "https://www.amazon.com",
-    description: "Save on select laptops, headphones, and accessories."
+    description: "Save on select laptops, headphones, and accessories.",
+    badge: "15% off"
   },
   {
     store: "Target",
@@ -15,7 +16,8 @@ const deals = [
     code: "TAKE10",
     category: "Home",
     url: "https://www.target.com",
-    description: "Great for home, essentials, and decor."
+    description: "A sample offer for home essentials and decor.",
+    badge: "$10 off"
   },
   {
     store: "Best Buy",
@@ -23,7 +25,8 @@ const deals = [
     code: "LAPTOP20",
     category: "Technology",
     url: "https://www.bestbuy.com",
-    description: "Discounts on select Windows and Mac laptops."
+    description: "A demo laptop deal used to test Coupon Compass search.",
+    badge: "20% off"
   },
   {
     store: "Walmart",
@@ -31,7 +34,8 @@ const deals = [
     code: "ROLLBACK",
     category: "Grocery",
     url: "https://www.walmart.com",
-    description: "Lower prices on everyday grocery items."
+    description: "Sample savings on everyday grocery items.",
+    badge: "Demo"
   },
   {
     store: "Travel Deals",
@@ -39,7 +43,8 @@ const deals = [
     code: "TRAVEL12",
     category: "Travel",
     url: "https://www.expedia.com",
-    description: "Stack savings on select hotel bookings."
+    description: "A sample hotel offer for testing travel search.",
+    badge: "12% off"
   },
   {
     store: "Fashion Outlet",
@@ -47,131 +52,179 @@ const deals = [
     code: "STYLE50",
     category: "Fashion",
     url: "https://www.macys.com",
-    description: "Applies to clothing and accessories."
+    description: "A demo clothing and accessories promotion.",
+    badge: "BOGO"
   }
 ];
 
-// FEATURED DEALS ON HOME PAGE
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function dealCardMarkup(deal) {
+  return `
+    <article class="deal-card">
+      <div class="deal-topline">
+        <span class="store-pill">${escapeHtml(deal.store)}</span>
+        <span class="deal-badge">${escapeHtml(deal.badge || deal.category)}</span>
+      </div>
+      <h3>${escapeHtml(deal.title)}</h3>
+      <p class="deal-description">${escapeHtml(deal.description)}</p>
+      <div class="deal-actions">
+        <button class="code-button" type="button" data-copy-code="${escapeHtml(deal.code)}" aria-label="Copy coupon code ${escapeHtml(deal.code)}">
+          Code: ${escapeHtml(deal.code)}
+        </button>
+        <a class="deal-link" href="${escapeHtml(deal.url)}" target="_blank" rel="noopener noreferrer">Visit</a>
+      </div>
+    </article>
+  `;
+}
+
 function renderFeaturedDeals() {
   const container = document.getElementById("featured-deals");
   if (!container) return;
 
-  container.innerHTML = "";
-
-  // Choose first 3 deals as featured
-  const featured = deals.slice(0, 3);
-  featured.forEach((deal, index) => {
-    const card = document.createElement("div");
-    card.className = "card featured-card";
-    card.innerHTML = `
-      <h3>${deal.store}</h3>
-      <p><strong>${deal.title}</strong></p>
-      <p>Code: <strong>${deal.code}</strong></p>
-      <p><a href="${deal.url}" target="_blank" rel="noopener noreferrer">Open Deal Website</a></p>
-    `;
-    container.appendChild(card);
-  });
-
-  // Simple rotation: highlight a different card every few seconds
-  let current = 0;
-  const cards = container.querySelectorAll(".featured-card");
-  if (cards.length === 0) return;
-
-  cards.forEach(c => c.classList.remove("active-featured"));
-  cards[0].classList.add("active-featured");
-
-  setInterval(() => {
-    cards[current].classList.remove("active-featured");
-    current = (current + 1) % cards.length;
-    cards[current].classList.add("active-featured");
-  }, 4000);
+  container.innerHTML = deals.slice(0, 3).map(dealCardMarkup).join("");
 }
 
-// CATEGORY FILTERING ON CATEGORIES PAGE
+function showCopyStatus(code) {
+  document.querySelector(".copy-status")?.remove();
+  const status = document.createElement("div");
+  status.className = "copy-status";
+  status.textContent = `Copied ${code}`;
+  status.setAttribute("role", "status");
+  document.body.appendChild(status);
+  setTimeout(() => status.remove(), 1800);
+}
+
+async function copyCouponCode(code) {
+  try {
+    await navigator.clipboard.writeText(code);
+    showCopyStatus(code);
+  } catch (error) {
+    const textArea = document.createElement("textarea");
+    textArea.value = code;
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    textArea.remove();
+    showCopyStatus(code);
+  }
+}
+
+function setupCopyButtons() {
+  document.addEventListener("click", event => {
+    const button = event.target.closest("[data-copy-code]");
+    if (!button) return;
+    copyCouponCode(button.dataset.copyCode);
+  });
+}
+
 function setupCategoryFilters() {
   const categoryLinks = document.querySelectorAll("[data-category]");
   const results = document.getElementById("category-results");
   if (!results || categoryLinks.length === 0) return;
 
-  function renderCategory(cat) {
-    results.innerHTML = "";
+  function renderCategory(category) {
     const matching = deals.filter(
-      d => d.category.toLowerCase() === cat.toLowerCase()
+      deal => deal.category.toLowerCase() === category.toLowerCase()
     );
+
     if (matching.length === 0) {
-      results.innerHTML = "<p>No deals found for this category yet.</p>";
+      results.innerHTML = "<p>No demo deals found for this category yet.</p>";
       return;
     }
-    matching.forEach(deal => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <h3>${deal.title}</h3>
-        <p><strong>Store:</strong> ${deal.store}</p>
-        <p><strong>Code:</strong> ${deal.code}</p>
-        <p><a href="${deal.url}" target="_blank" rel="noopener noreferrer">View Deal Website</a></p>
-      `;
-      results.appendChild(card);
-    });
+
+    results.innerHTML = matching.map(dealCardMarkup).join("");
   }
 
   categoryLinks.forEach(link => {
-    link.addEventListener("click", function (e) {
-      const cat = this.getAttribute("data-category");
-      if (!cat) return;
-      e.preventDefault();
-      renderCategory(cat);
+    link.addEventListener("click", event => {
+      const category = link.getAttribute("data-category");
+      if (!category) return;
+      event.preventDefault();
+      renderCategory(category);
     });
   });
 }
 
-// SEARCH PAGE FUNCTIONALITY
+function getSearchMatches(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+
+  return deals.filter(deal =>
+    [deal.store, deal.category, deal.title, deal.description, deal.code]
+      .some(value => value.toLowerCase().includes(q))
+  );
+}
+
+function renderSearchResults(query) {
+  const results = document.getElementById("results");
+  if (!results) return;
+
+  const q = query.trim();
+  if (!q) {
+    results.innerHTML = "<p>Type a store, category, product, or keyword to see matching demo deals.</p>";
+    return;
+  }
+
+  const matches = getSearchMatches(q);
+  if (matches.length === 0) {
+    results.innerHTML = `<p>No demo deals found for <strong>${escapeHtml(q)}</strong>. Try another search.</p>`;
+    return;
+  }
+
+  results.innerHTML = `<p class="small-note">${matches.length} demo result${matches.length === 1 ? "" : "s"} for “${escapeHtml(q)}”</p>` +
+    matches.map(dealCardMarkup).join("");
+}
+
 function searchDeals() {
   const input = document.getElementById("searchBox");
-  const results = document.getElementById("results");
-  if (!input || !results) return;
+  if (!input) return;
+  renderSearchResults(input.value);
+}
 
-  const q = input.value.trim().toLowerCase();
-  if (q === "") {
-    results.innerHTML = "<p>Type a store, category, or keyword to see matching deals.</p>";
-    return;
+function initializeSearchPage() {
+  const input = document.getElementById("searchBox");
+  if (!input) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get("q") || "";
+
+  if (query) {
+    input.value = query;
+    renderSearchResults(query);
+  } else {
+    renderSearchResults("");
   }
 
-  const matches = deals.filter(d =>
-    d.store.toLowerCase().includes(q) ||
-    d.category.toLowerCase().includes(q) ||
-    d.title.toLowerCase().includes(q) ||
-    d.description.toLowerCase().includes(q)
-  );
+  input.addEventListener("input", searchDeals);
+}
 
-  if (matches.length === 0) {
-    results.innerHTML = "<p>No results found. Try another word.</p>";
-    return;
-  }
+function setupHeroSearch() {
+  const form = document.getElementById("heroSearchForm");
+  const input = document.getElementById("heroSearch");
+  if (!form || !input) return;
 
-  results.innerHTML = "";
-  matches.forEach(deal => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <h3>${deal.title}</h3>
-      <p><strong>Store:</strong> ${deal.store}</p>
-      <p><strong>Category:</strong> ${deal.category}</p>
-      <p><strong>Code:</strong> ${deal.code}</p>
-      <p><a href="${deal.url}" target="_blank" rel="noopener noreferrer">Open Deal Website</a></p>
-    `;
-    results.appendChild(card);
+  form.addEventListener("submit", event => {
+    if (!input.value.trim()) {
+      event.preventDefault();
+      input.focus();
+    }
   });
 }
 
-// Attach behaviors on page load
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   renderFeaturedDeals();
+  setupCopyButtons();
   setupCategoryFilters();
-
-  // Initialize search results text if on search page
-  const results = document.getElementById("results");
-  if (results) {
-    results.innerHTML = "<p>Type a store, category, or keyword to see matching deals.</p>";
-  }
+  initializeSearchPage();
+  setupHeroSearch();
 });
