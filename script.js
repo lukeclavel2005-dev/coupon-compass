@@ -79,7 +79,7 @@ function dealCardMarkup(deal) {
         <button class="code-button" type="button" data-copy-code="${escapeHtml(deal.code)}" aria-label="Copy coupon code ${escapeHtml(deal.code)}">
           Code: ${escapeHtml(deal.code)}
         </button>
-        <a class="deal-link" href="${escapeHtml(deal.url)}" target="_blank" rel="noopener noreferrer">Visit</a>
+        <a class="deal-link" href="${escapeHtml(deal.url)}" target="_blank" rel="noopener noreferrer" aria-label="Visit ${escapeHtml(deal.store)} website">Visit ${escapeHtml(deal.store)}</a>
       </div>
     </article>
   `;
@@ -147,9 +147,13 @@ async function copyCouponCode(code) {
     textArea.style.opacity = "0";
     document.body.appendChild(textArea);
     textArea.select();
-    document.execCommand("copy");
+    const copied = document.execCommand("copy");
     textArea.remove();
-    showCopyStatus(code);
+    if (copied) {
+      showCopyStatus(code);
+    } else {
+      window.prompt("Copy this coupon code:", code);
+    }
   }
 }
 
@@ -158,34 +162,6 @@ function setupCopyButtons() {
     const button = event.target.closest("[data-copy-code]");
     if (!button) return;
     copyCouponCode(button.dataset.copyCode);
-  });
-}
-
-function setupCategoryFilters() {
-  const categoryLinks = document.querySelectorAll("[data-category]");
-  const results = document.getElementById("category-results");
-  if (!results || categoryLinks.length === 0) return;
-
-  function renderCategory(category) {
-    const matching = deals.filter(
-      deal => deal.category.toLowerCase() === category.toLowerCase()
-    );
-
-    if (matching.length === 0) {
-      results.innerHTML = "<p>No demo deals found for this category yet.</p>";
-      return;
-    }
-
-    results.innerHTML = matching.map(dealCardMarkup).join("");
-  }
-
-  categoryLinks.forEach(link => {
-    link.addEventListener("click", event => {
-      const category = link.getAttribute("data-category");
-      if (!category) return;
-      event.preventDefault();
-      renderCategory(category);
-    });
   });
 }
 
@@ -219,10 +195,21 @@ function renderSearchResults(query) {
     matches.map(dealCardMarkup).join("");
 }
 
-function searchDeals() {
+function searchDeals({ updateUrl = true } = {}) {
   const input = document.getElementById("searchBox");
   if (!input) return;
   renderSearchResults(input.value);
+
+  if (updateUrl) {
+    const url = new URL(window.location.href);
+    const query = input.value.trim();
+    if (query) {
+      url.searchParams.set("q", query);
+    } else {
+      url.searchParams.delete("q");
+    }
+    window.history.replaceState({}, "", url);
+  }
 }
 
 function initializeSearchPage() {
@@ -239,7 +226,13 @@ function initializeSearchPage() {
     renderSearchResults("");
   }
 
-  input.addEventListener("input", searchDeals);
+  input.addEventListener("input", () => searchDeals());
+
+  const form = document.getElementById("searchForm");
+  form?.addEventListener("submit", event => {
+    event.preventDefault();
+    searchDeals();
+  });
 }
 
 function setupHeroSearch() {
@@ -259,7 +252,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderFeaturedDeals();
   renderContextDeals();
   setupCopyButtons();
-  setupCategoryFilters();
   initializeSearchPage();
   setupHeroSearch();
 });

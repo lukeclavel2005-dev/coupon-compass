@@ -38,6 +38,13 @@ input {
   font: inherit;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
 /* Legacy page layout while V2 pages are upgraded one-by-one */
 body:not(.home-page) {
   padding: 20px;
@@ -140,6 +147,11 @@ body:not(.home-page) > footer {
 .small-note {
   font-size: 0.88rem;
   color: var(--muted);
+}
+
+.deal-grid > .small-note,
+.deal-grid > p:only-child {
+  grid-column: 1 / -1;
 }
 
 /* V2 homepage */
