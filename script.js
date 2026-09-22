@@ -248,10 +248,94 @@ function setupHeroSearch() {
   });
 }
 
+function setupAssistantWidget() {
+  const widget = document.createElement("aside");
+  widget.className = "assistant-widget";
+  widget.innerHTML = `
+    <button
+      class="assistant-launcher"
+      type="button"
+      aria-expanded="false"
+      aria-controls="assistant-panel"
+    >
+      <span aria-hidden="true">✦</span>
+      Ask Coupon Compass
+    </button>
+
+    <section class="assistant-panel" id="assistant-panel" aria-labelledby="assistant-title" hidden>
+      <header class="assistant-header">
+        <div>
+          <span class="assistant-label">SHOPPING ASSISTANT</span>
+          <h2 id="assistant-title">Ask Coupon Compass</h2>
+        </div>
+        <button class="assistant-close" type="button" aria-label="Close assistant">×</button>
+      </header>
+
+      <div class="assistant-messages" role="log" aria-live="polite" aria-relevant="additions">
+        <div class="assistant-message assistant-message-bot">
+          Hi! I’ll help you compare Coupon Compass deals. My AI connection is the next build stage.
+        </div>
+      </div>
+
+      <form class="assistant-form">
+        <label class="sr-only" for="assistant-input">Ask about a deal</label>
+        <input id="assistant-input" type="text" placeholder="Ask about laptops, travel, stores…" autocomplete="off">
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  `;
+  document.body.appendChild(widget);
+
+  const launcher = widget.querySelector(".assistant-launcher");
+  const panel = widget.querySelector(".assistant-panel");
+  const closeButton = widget.querySelector(".assistant-close");
+  const form = widget.querySelector(".assistant-form");
+  const input = widget.querySelector("#assistant-input");
+  const messages = widget.querySelector(".assistant-messages");
+
+  function setOpen(isOpen) {
+    panel.hidden = !isOpen;
+    launcher.setAttribute("aria-expanded", String(isOpen));
+    if (isOpen) {
+      input.focus();
+    } else {
+      launcher.focus();
+    }
+  }
+
+  launcher.addEventListener("click", () => setOpen(panel.hidden));
+  closeButton.addEventListener("click", () => setOpen(false));
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !panel.hidden) setOpen(false);
+  });
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    const question = input.value.trim();
+    if (!question) return;
+
+    const userMessage = document.createElement("div");
+    userMessage.className = "assistant-message assistant-message-user";
+    userMessage.textContent = question;
+    messages.appendChild(userMessage);
+
+    const placeholderReply = document.createElement("div");
+    placeholderReply.className = "assistant-message assistant-message-bot";
+    placeholderReply.textContent = "The chat interface is working. We’ll connect it to the secure AI backend in Stage 2.";
+    messages.appendChild(placeholderReply);
+
+    input.value = "";
+    messages.scrollTop = messages.scrollHeight;
+    input.focus();
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderFeaturedDeals();
   renderContextDeals();
   setupCopyButtons();
   initializeSearchPage();
   setupHeroSearch();
+  setupAssistantWidget();
 });

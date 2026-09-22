@@ -699,6 +699,148 @@ body:not(.home-page) > footer {
   font-size: 0.9rem;
 }
 
+/* Shopping assistant */
+.assistant-widget {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.assistant-launcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 50px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--blue);
+  box-shadow: 0 14px 32px rgba(21, 94, 239, 0.3);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.assistant-launcher:hover,
+.assistant-form button:hover {
+  background: var(--blue-dark);
+}
+
+.assistant-panel {
+  width: min(380px, calc(100vw - 32px));
+  overflow: hidden;
+  border: 1px solid #d9e2f2;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
+}
+
+.assistant-panel[hidden] {
+  display: none;
+}
+
+.assistant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--navy), #173d8f);
+}
+
+.assistant-label {
+  color: #c6d5ff;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+}
+
+.assistant-header h2 {
+  margin: 2px 0 0;
+  color: #fff;
+  font-size: 1.15rem;
+}
+
+.assistant-close {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.assistant-messages {
+  height: 300px;
+  overflow-y: auto;
+  padding: 18px;
+  background: #f7f9fc;
+}
+
+.assistant-message {
+  width: fit-content;
+  max-width: 88%;
+  margin-bottom: 12px;
+  padding: 11px 13px;
+  border-radius: 15px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.assistant-message-bot {
+  border-bottom-left-radius: 5px;
+  color: #344054;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.assistant-message-user {
+  margin-left: auto;
+  border-bottom-right-radius: 5px;
+  color: #fff;
+  background: var(--blue);
+}
+
+.assistant-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 9px;
+  padding: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.assistant-form input {
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #cfd6e4;
+  border-radius: 11px;
+  outline: 0;
+}
+
+.assistant-form input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(21, 94, 239, 0.12);
+}
+
+.assistant-form button {
+  border: 0;
+  border-radius: 11px;
+  padding: 0 16px;
+  color: #fff;
+  background: var(--blue);
+  font-weight: 800;
+  cursor: pointer;
+}
+
 @media (max-width: 900px) {
   .topbar {
     min-height: auto;
@@ -784,5 +926,18 @@ body:not(.home-page) > footer {
 
   .deal-link {
     min-height: 43px;
+  }
+
+  .assistant-widget {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .assistant-panel {
+    width: calc(100vw - 24px);
+  }
+
+  .assistant-messages {
+    height: min(300px, 42vh);
   }
 }
